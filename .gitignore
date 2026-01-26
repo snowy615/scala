@@ -1,0 +1,14 @@
+# Metals / Bloop
+.metals/
+.bloop/
+.bsp/
+
+# Scala-CLI
+.scala-build/
+
+# OS X
+.DS_Store
+
+# Compiled
+target/
+*.class

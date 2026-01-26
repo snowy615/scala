@@ -21,7 +21,17 @@ object Cipher {
   /* ----- Functions below here need to be implemented ----- */
 
   /** Encrypt plain using key; can also be used for decryption */
-  def encrypt(key: Array[Char], plain: Array[Char]): Array[Char] = ???
+  def encrypt(key: Array[Char], plain: Array[Char]): Array[Char] = {
+    val keylen = key.length
+    val plainlen = plain.length
+    var entext = new Array[Char](plainlen)
+    var i = 0
+    while (i < plainlen){
+      entext(i) = (plain(i).toInt ^ key(i % keylen).toInt).toChar
+      i += 1
+    }
+    entext
+  }
 
   /** Try to decrypt ciphertext, using crib as a crib */
   def tryCrib(crib: Array[Char], ciphertext: Array[Char]): Unit = ???

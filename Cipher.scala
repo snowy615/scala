@@ -1,4 +1,4 @@
-package p1
+// package p1
 
 object Cipher {
 
@@ -13,7 +13,7 @@ object Cipher {
 
   /** Read file into array */
   def readFile(fname: String): Array[Char] =
-    scala.io.Source.fromFile(fname).toArray
+    scala.io.Source.fromFile(fname)(scala.io.Codec.ISO8859).toArray
 
   /** Read from stdin in a similar manner */
   def readStdin() = scala.io.Source.stdin.toArray
@@ -51,13 +51,12 @@ object Cipher {
     var keyChars = new Array[Char](criblen)
     var start = 0
     var i = 0
-    while (start < cipherlen - criblen) {
+    while (start <= cipherlen - criblen) {
       while (i < criblen) {
         keyChars(i) = (crib(i).toInt ^ ciphertext(i + start).toInt).toChar
         i += 1
       }
       i = 0
-      start += 1
 
       var j = 1
       var keylen = 0
@@ -75,28 +74,66 @@ object Cipher {
         var key = new Array[Char](keylen)
         i = 0
         while (i < keylen) {
-          key((start - 1 + i) % keylen) = keyChars(i)
+          key((start + i) % keylen) = keyChars(i)
           i += 1
         }
-        println(
-          "Found key candidate of length " + keylen + ": " + new String(key)
-        )
+        println("key = " + new String(key))
         print(new String(encrypt(key, ciphertext)))
-        return
       }
+      start += 1
 
     }
 
   }
 
   /** The first optional statistical test, to guess the length of the key */
-  def crackKeyLen(ciphertext: Array[Char]): Unit = ???
+  def crackKeyLen(ciphertext: Array[Char]): Unit = {
+    for (shift <- 1 to 30) {
+      var count = 0
+      for (i <- 0 until ciphertext.length - shift) {
+        if (ciphertext(i) == ciphertext(i + shift)) count += 1
+      }
+      println(s"shift = $shift, count = $count")
+    }
+  }
 
   /** The second optional statistical test, to guess characters of the key. */
-  def crackKey(klen: Int, ciphertext: Array[Char]): Unit = ???
+  def crackKey(klen: Int, ciphertext: Array[Char]): Unit = {
+    // Counts for each key position (row) and each possible character (col)
+    val counts = Array.ofDim[Int](klen, 256)
+
+    var shift = klen
+    while (shift < ciphertext.length) {
+      for (i <- 0 until ciphertext.length - shift) {
+        if (ciphertext(i) == ciphertext(i + shift)) {
+          val keyChar = (ciphertext(i).toInt ^ 32)
+          if (keyChar >= 32 && keyChar < 127) {
+            counts(i % klen)(keyChar) += 1
+          }
+        }
+      }
+      shift += klen
+    }
+
+    // Find the most frequent characteristic for each position
+    val key = new Array[Char](klen)
+    for (i <- 0 until klen) {
+      var maxCount = -1
+      var bestChar = 0
+      for (c <- 0 until 256) {
+        if (counts(i)(c) > maxCount) {
+          maxCount = counts(i)(c)
+          bestChar = c
+        }
+      }
+      key(i) = bestChar.toChar
+    }
+
+    println("key = " + new String(key))
+  }
 
   /** The main method just selects which piece of functionality to run */
-  def main(args: Array[String]) = {
+  def run(args: Array[String]) = {
     // string to print if error occurs
     val errString =
       "Usage: scala Cipher (-encrypt|-decrypt) key [file]\n" +
@@ -131,3 +168,5 @@ object Cipher {
     } else println(errString)
   }
 }
+
+@main def runCipher(args: String*) = Cipher.run(args.toArray)

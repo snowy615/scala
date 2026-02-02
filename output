@@ -1,0 +1,124 @@
+snowyan@Snows-MacBook-Air-4 scala % od -b p1/santa.txt
+0000000   104 145 141 162 040 123 141 156 164 141 054 040 120 154 145 141
+0000020   163 145 040 142 162 151 156 147 040 155 145 040 141 040 156 145
+0000040   167 040 142 151 153 145 040 146 157 162 040 103 150 162 151 163
+0000060   164 155 141 163 054 040 154 157 166 145 040 112 157 150 156    
+0000077
+
+snowyan@Snows-MacBook-Air-4 scala % echo -n RUDOLF | od -b
+0000000   122 125 104 117 114 106                                        
+0000006
+
+snowyan@Snows-MacBook-Air-4 scala % scala p1/Cipher.scala -- -encrypt RUDO
+LF p1/santa.txt | od -b
+0000000   026 060 045 075 154 025 063 073 060 056 140 146 002 071 041 056
+0000020   077 043 162 067 066 046 042 041 162 070 041 157 055 146 074 060
+0000040   063 157 056 057 071 060 144 051 043 064 162 026 054 075 045 065
+0000060   046 070 045 074 140 146 076 072 062 052 154 014 075 075 052    
+0000077
+
+snowyan@Snows-MacBook-Air-4 scala % scala p1/Cipher.scala -- -encrypt 
+RUDOLF p1/santa.txt | scala p1/Cipher.scala -- -decrypt RUDOLF
+Deduplicating compilation of p1_13a81eddb0-a089fec2e7 from bsp client 'scala-cli 1.9.1' (since 0.192s)
+Dear Santa, Please bring me a new bike for Christmas, love John
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crib Christmas message                                   ^^^^^^^^^^^^^^^^^^^^^^
+key = RUDOLF
+Dear Santa, Please bring me a new bike for Christmas, love John%  
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crackKeyLen private1                                    ^^^^^^^^^^^^^^^^^^^^^^
+shift = 1, count = 17
+shift = 2, count = 9
+shift = 3, count = 24
+shift = 4, count = 9
+shift = 5, count = 22
+shift = 6, count = 16
+shift = 7, count = 11
+shift = 8, count = 9
+shift = 9, count = 40
+shift = 10, count = 19
+shift = 11, count = 10
+shift = 12, count = 11
+shift = 13, count = 12
+shift = 14, count = 14
+shift = 15, count = 22
+shift = 16, count = 11
+shift = 17, count = 10
+shift = 18, count = 46
+shift = 19, count = 13
+shift = 20, count = 15
+shift = 21, count = 16
+shift = 22, count = 15
+shift = 23, count = 16
+shift = 24, count = 17
+shift = 25, count = 15
+shift = 26, count = 10
+shift = 27, count = 23
+shift = 28, count = 16
+shift = 29, count = 11
+shift = 30, count = 28
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crackKey 9 private1 | sort | uniq -c | sort -n
+   1 key = PEMBERLEY
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crackKey 8 private2 | sort | uniq -c | sort -n
+Be not alarmed, Madam, on receiving this letter, by the
+apprehension of its containing any repetition of those
+sentiments, or renewal of those offers, which were last night
+so disgusting to you.  I write without any intention of paining
+you, or humbling myself, by dwelling on wishes, which, for the
+happiness of both, cannot be too soon forgotten; and the effort
+which the formation and the perusal of this letter must
+occasion should have been spared, had not my character required
+it to be written and read.  You must, therefore, pardon the
+freedom with which I demand your attention; your feelings, I
+know, will bestow it unwillingly, but I demand it of your
+justice.
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crackKeyLen private2                                   ^^^^^^^^^^^^^^^^^^^^^^
+shift = 1, count = 17
+shift = 2, count = 12
+shift = 3, count = 14
+shift = 4, count = 4
+shift = 5, count = 12
+shift = 6, count = 8
+shift = 7, count = 5
+shift = 8, count = 27
+shift = 9, count = 8
+shift = 10, count = 6
+shift = 11, count = 6
+shift = 12, count = 17
+shift = 13, count = 9
+shift = 14, count = 6
+shift = 15, count = 11
+shift = 16, count = 21
+shift = 17, count = 17
+shift = 18, count = 14
+shift = 19, count = 7
+shift = 20, count = 12
+shift = 21, count = 4
+shift = 22, count = 9
+shift = 23, count = 11
+shift = 24, count = 17
+shift = 25, count = 9
+shift = 26, count = 3
+shift = 27, count = 3
+shift = 28, count = 6
+shift = 29, count = 2
+shift = 30, count = 5
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -crackKey 8 private2 | sort | uniq -c | sort -n                                    ^^^^^^^^^^^^^^^^^^^^^^
+   1 key = HOGWARTS
+
+snowyan@Snows-MacBook-Air-4 scala % scala Cipher.scala -- -decrypt HOGWARTS private2                                ^^^^^^^^^^^^^^^^^^^^^^
+HOGWARTS SCHOOL of WITCHCRAFT and WIZARDRY
+Headmaster: Albus Dumbledore (Order of Merlin, First Class, Grand
+Sorc., Chf. Warlock, Supreme Mugwump, International Confed. of
+Wizards)
+Dear Mr Potter,
+We are pleased to inform you that you have been accepted at Hogwarts
+School of Witchcraft and Wizardry. Please find enclosed a list of all
+necessary books and equipment. Term begins on 1 September. We await
+your owl by no later than 31 July.
+Yours sincerely, Minerva McGonagall. Deputy HeadmistressY%
+

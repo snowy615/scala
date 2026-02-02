@@ -24,20 +24,20 @@ object Cipher {
   def encrypt(key: Array[Char], plain: Array[Char]): Array[Char] = {
     val keylen = key.length
     val plainlen = plain.length
-    var entext = new Array[Char](plainlen)
+    var encryptedtext = new Array[Char](plainlen)
     var i = 0
     while (i < plainlen) {
-      entext(i) = (plain(i).toInt ^ key(i % keylen).toInt).toChar
+      encryptedtext(i) = (plain(i).toInt ^ key(i % keylen).toInt).toChar
       i += 1
     }
-    entext
+    encryptedtext
   }
 
   /** Check if the array has repeated characters */
   def isRep(keyChars: Array[Char], j: Int): Boolean = {
-    var klen = keyChars.length
+    var keycharslen = keyChars.length
     var i = 0
-    while (i < klen - j) {
+    while (i < keycharslen - j) {
       if (keyChars(i) != keyChars(i + j)) return false
       i += 1
     }
@@ -56,23 +56,22 @@ object Cipher {
         keyChars(i) = (crib(i).toInt ^ ciphertext(i + start).toInt).toChar
         i += 1
       }
-      i = 0
 
-      var j = 1
+      var guesslen = 1
       var keylen = 0
       var f = false
-      while (j <= criblen - 2 && !f) {
-        if (isRep(keyChars, j)) {
-          keylen = j
+      while (guesslen <= criblen - 2 && !f) {
+        if (isRep(keyChars, guesslen)) {
+          keylen = guesslen
           f = true
         } else {
-          j += 1
+          guesslen += 1
         }
       }
 
+      i = 0
       if (f) {
         var key = new Array[Char](keylen)
-        i = 0
         while (i < keylen) {
           key((start + i) % keylen) = keyChars(i)
           i += 1
@@ -99,14 +98,14 @@ object Cipher {
 
   /** The second optional statistical test, to guess characters of the key. */
   def crackKey(klen: Int, ciphertext: Array[Char]): Unit = {
-    // Counts for each key position (row) and each possible character (col)
     val counts = Array.ofDim[Int](klen, 256)
+    // rows = key positions, columns = characters
 
     var shift = klen
     while (shift < ciphertext.length) {
       for (i <- 0 until ciphertext.length - shift) {
         if (ciphertext(i) == ciphertext(i + shift)) {
-          val keyChar = (ciphertext(i).toInt ^ 32)
+          val keyChar = (ciphertext(i).toInt ^ 32) // space = 32
           if (keyChar >= 32 && keyChar < 127) {
             counts(i % klen)(keyChar) += 1
           }
@@ -115,14 +114,13 @@ object Cipher {
       shift += klen
     }
 
-    // Find the most frequent characteristic for each position
     val key = new Array[Char](klen)
     for (i <- 0 until klen) {
-      var maxCount = -1
+      var maxCnt = -1
       var bestChar = 0
       for (c <- 0 until 256) {
-        if (counts(i)(c) > maxCount) {
-          maxCount = counts(i)(c)
+        if (counts(i)(c) > maxCnt) {
+          maxCnt = counts(i)(c)
           bestChar = c
         }
       }

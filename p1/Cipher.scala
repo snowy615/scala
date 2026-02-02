@@ -26,15 +26,68 @@ object Cipher {
     val plainlen = plain.length
     var entext = new Array[Char](plainlen)
     var i = 0
-    while (i < plainlen){
+    while (i < plainlen) {
       entext(i) = (plain(i).toInt ^ key(i % keylen).toInt).toChar
       i += 1
     }
     entext
   }
 
+  /** Check if the array has repeated characters */
+  def isRep(keyChars: Array[Char], j: Int): Boolean = {
+    var klen = keyChars.length
+    var i = 0
+    while (i < klen - j) {
+      if (keyChars(i) != keyChars(i + j)) return false
+      i += 1
+    }
+    true
+  }
+
   /** Try to decrypt ciphertext, using crib as a crib */
-  def tryCrib(crib: Array[Char], ciphertext: Array[Char]): Unit = ???
+  def tryCrib(crib: Array[Char], ciphertext: Array[Char]): Unit = {
+    val criblen = crib.length
+    val cipherlen = ciphertext.length
+    var keyChars = new Array[Char](criblen)
+    var start = 0
+    var i = 0
+    while (start < cipherlen - criblen) {
+      while (i < criblen) {
+        keyChars(i) = (crib(i).toInt ^ ciphertext(i + start).toInt).toChar
+        i += 1
+      }
+      i = 0
+      start += 1
+
+      var j = 1
+      var keylen = 0
+      var f = false
+      while (j <= criblen - 2 && !f) {
+        if (isRep(keyChars, j)) {
+          keylen = j
+          f = true
+        } else {
+          j += 1
+        }
+      }
+
+      if (f) {
+        var key = new Array[Char](keylen)
+        i = 0
+        while (i < keylen) {
+          key((start - 1 + i) % keylen) = keyChars(i)
+          i += 1
+        }
+        println(
+          "Found key candidate of length " + keylen + ": " + new String(key)
+        )
+        print(new String(encrypt(key, ciphertext)))
+        return
+      }
+
+    }
+
+  }
 
   /** The first optional statistical test, to guess the length of the key */
   def crackKeyLen(ciphertext: Array[Char]): Unit = ???

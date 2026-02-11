@@ -49,4 +49,15 @@ class p2Spec extends AnyFlatSpec with Matchers {
   it should "f) " in {
     search("aaa", "aaa") should be(true)
   }
+
+  // Q6
+  "Period" should "=1 aaaa" in {
+    p2.period("aaaa".toCharArray) should be(1)
+  }
+  it should "=2 abab" in {
+    p2.period("abab".toCharArray) should be(2)
+  }
+  it should "=4 abac" in {
+    p2.period("abac".toCharArray) should be(4)
+  }
 }

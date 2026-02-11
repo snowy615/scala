@@ -70,7 +70,7 @@ time would be accurate to the precision of double * number of times of iteration
 Q5
    */
 
-//original code
+  // original code
   def search(patt: Array[Char], line: Array[Char]): Boolean = {
     val K = patt.size; val N = line.size
     // I: found = (line[i..i+K] = patt[0..K) for some i in [0..j)) and 0 <= j <= N-K
@@ -142,6 +142,122 @@ testing code:
 [info] All tests passed.
 
 could modify the code above to include the mistakes and then run scalaTest to see error
+   */
+
+  /*
+Q6
+   */
+  def period(s: Array[Char]): Int = {
+    val n = s.length
+    var l = 1 // possible length of period
+    while (l < n) {
+      var i = 0
+      var f = true // flag for matches
+      while (i < n - l && f) {
+        if (s(i) != s(i + l)) f = false // mismatch
+        i += 1
+      }
+      if (f) return l // return smallest period
+      l += 1
+    }
+    n // none found, so period = length of string
+  }
+  /*
+[info] - should =1 aaaa
+[info] - should =2 abab
+[info] - should =4 abac
+[info] Run completed in 201 milliseconds.
+[info] Total number of tests run: 12
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 12, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+   */
+
+  /*
+Q7
+iterate through elements, if p(i) true, then return true. Else continue. If after checking the list, flag is still false, then return false
+
+invariant
+I = for all k in [0,i), p(k) is false
+
+before loop
+i = 0, so I = true
+
+during loop
+if p(i) is true then f = true. loop terminates with I = true
+if p(i) is false then i increments. I = true
+
+termination
+variant = N - i, since i increments, variant decreases. Will terminate.
+
+after loop
+if f = true then exists true (justification in during loop)
+if i = N then for all k in [0,N), p(k) is false, so I=true
+   */
+  def exists(p: Int => Boolean, N: Int): Boolean = {
+    var i = 0
+    var f = false
+    while (i < N && !f) {
+      if (p(i)) f = true
+      i += 1
+    }
+    f
+  }
+
+  /*
+Q8
+a)
+find smallest m in 1/m <= p/q
+approach 1: binary search to find m
+approach 2: take reciprocal of p/q.
+m >= q/p
+so m = ceil(q/p)
+
+val m = (q.toDouble/p).ceil.toInt
+or
+val m = (q+p-1)/p since p,q are positive integers
+
+b)
+code below (function = findMs)
+
+c)
+in the loop,
+pp = pp*m - qq
+
+m is chosen such that 1/m <= p/q < 1/(m-1)
+1/(m-1) is the upper bound because if it is possible, then m-1 would have been chosen
+
+so from p/q < 1/(m-1),
+pm-q<p
+same form as p being updated, so new pp will be less than the orginal pp. since pp is a positive finite int and decreasing, loop must terminate when pp = 0
+
+d)
+show array is strictly increasing
+the algorithm of finding m is greedy, always picking the smallest possible m such that 1/m is maximized.
+So it will be increasing.
+It is strict it will always take the largest possible value for m, so it will never be greater than 1/2 of something left for a duplicate denominator to show up
+   */
+
+  def findMs(p: Int, q: Int): Array[Int] = {
+    var pp = p; var qq = q // change to mutable variables
+    var d = new Array[Int](200) // denominator array
+    var i = 0 // index for ms
+    while (pp > 0 && i < 200) {
+      val m = (qq + pp - 1) / pp
+      d(i) = m // find m and update pp, qq
+      pp = pp * m - qq
+      qq = qq * m
+      i += 1
+    }
+    d.take(i) // take the denominators
+  }
+
+  /*
+Q9
+   */
+
+  /*
+Q10
    */
 
 }

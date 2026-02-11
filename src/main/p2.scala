@@ -1,3 +1,4 @@
+object p2 {
 /*
 Q1
 a)
@@ -24,3 +25,4 @@ y+nasty(x) will print 11 because y was originally 5, then nasty is called, retur
 
 /* */
 /* */
+}

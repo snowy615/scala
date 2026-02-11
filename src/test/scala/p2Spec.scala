@@ -26,4 +26,27 @@ class p2Spec extends AnyFlatSpec with Matchers {
 
   // Q5
 
+  // helper function to convert string to array of char
+  def search(patt: String, line: String): Boolean = {
+    p2.search(patt.toCharArray, line.toCharArray)
+  }
+
+  "The mistakes " should "a) " in {
+    search("hot", "brain") should be(false)
+  }
+  it should "b) " in {
+    search("rain", "brain") should be(true)
+  }
+  it should "c) " in {
+    search("rain", "brain") should be(true)
+  }
+  it should "d) " in {
+    search("vain", "brain") should be(false)
+  }
+  it should "e) " in {
+    search("aaa", "bbb") should be(false)
+  }
+  it should "f) " in {
+    search("aaa", "aaa") should be(true)
+  }
 }

@@ -23,6 +23,9 @@ will print 7 because nasty(x) will return 2*3 = 6 and y = 1 so 6+1 = 7
 y+nasty(x) will print 11 because y was originally 5, then nasty is called, returning 2*3=6. 5+6 = 11
 */
 
-/* */
+/* 
+Q3
+test code in p2t.scala
+*/
 /* */
 }

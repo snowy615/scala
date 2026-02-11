@@ -1,4 +1,4 @@
-name := "p2t"
+name := "p2Spec"
 
 version := "0.1"
 

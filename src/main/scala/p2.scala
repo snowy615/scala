@@ -254,10 +254,33 @@ It is strict it will always take the largest possible value for m, so it will ne
 
   /*
 Q9
+linear search for exponent
    */
+  def log3(n: BigInt): Int = {
+    var x = 0 // exp count
+    var p = BigInt(1) // power of 3
+    while (p * 3 <= n) { // floor
+      p *= 3
+      x += 1
+    }
+    x // return exp = log3 x
+  }
 
   /*
 Q10
+code eval below
    */
+  def eval(a: Array[Double], x: Double): Double = {
+    var i = 0
+    var n = a.length
+    var xp = 1.0 // power of x ^ i
+    var sum = 0.0 // sum of a(i)*x^i
+    while (i < n) {
+      sum += a(i) * xp
+      xp *= x
+      i += 1
+    }
+    sum
+  }
 
 }

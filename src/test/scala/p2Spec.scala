@@ -23,6 +23,7 @@ class p2Spec extends AnyFlatSpec with Matchers {
     val expected = Array("defg", "efg", "bcdefg", "cdefg", "abcdefg")
     result should equal(expected)
   }
+ 
 
   // Q5
 

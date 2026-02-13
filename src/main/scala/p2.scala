@@ -284,3 +284,23 @@ code eval below
   }
 
 }
+
+
+// to be corrected
+//3
+ //desc order can be sortwith (<)
+  //.filter(_>'s)
+//4c change to double to have more precision, steps = best
+// scala test could use assert statements
+//assert(search("word1", "word2"))
+//5e index out of bounds
+
+// 6 invariant S[0..N-k) = S[k..N) ^ 1 <= k <= N
+// return if the invariant is true rather than if statement j == N-k
+
+// 7 need boundary for invariant
+// I ^ (n=N or P(n))
+
+
+
+// 1b) positive , negative res + 3

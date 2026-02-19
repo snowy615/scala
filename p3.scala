@@ -130,6 +130,10 @@ def findxc():BigInt = {
 
 /*
 Q4
+loop from i=1 to N-1 to ensure a[0..i] is sorted
+  find idx where a[idx] = v using binary search
+  shift elements from i to idx+1
+  a[idx] = v
 */
 def binaryInsertSort(a: Array[Int]): Unit = {
   val N = a.length
@@ -156,11 +160,58 @@ def binaryInsertSort(a: Array[Int]): Unit = {
 
 /*
 Q5
+using the leftmost element as pivot could be bad if the result is not balanced (monotonic decreasing/increasing array). Eg, a decreasing array
+T(n) = T(n-1) + O(n) = O(n^2)
+the advantage is that it is simple to implement O(1) without having to do a search. Usually it should be balanced since pivot is random
+expected size of the larger segment is 3/4n because
+  assume uniformly distributed from [0, n], larger piece will be uniformly distributed from [0.5n, n]. So average will be 0.75 n.
+T(n) = T(3*n/4) + T(n/4) O(n) = O(nlogn)
+
 */
+//partition a[l..r], return k s.t. a[l..k] < x <= a[k+1..r] and l <= k < r
+def partition(l:Int, r:Int, a:Array[Int]):Int = {
+  val x = a(l)
+  var i = l+1
+  var j = r
+  while (i < j){
+    if (a(i) < x) i += 1
+    else {
+      val t = a(i)
+      a(i) = a(j)
+      a(j) = t
+      j -= 1
+    }
+  }
+  a(l) = a(i-1)
+  a(i-1) = x
+  i-1
+}
 
 /*
 Q6
+the element at a(j) could also be larger than the pivot. But it gets moved twice since when I find a larger element, I would swap it, then I would have to swap it back to r-1 spot
+improved version is that j only stays at an element smaller than or equal to the pivot to avoid unnecessary swaps
+I = a[l+1..i) < x <= a[j..r] && l < i <= j <= r
 */
+
+def partition2(l:Int, r:Int, a:Array[Int]):Int = {
+  val x = a(l)
+  var i = l+1
+  var j = r
+  while (i < j){
+    while (i < j && a(i) < x) i += 1
+    while (i < j && a(j) >= x) j -= 1
+    if (i < j){
+      val t = a(i)
+      a(i) = a(j-1)
+      a(j-1) = t
+      j -= 1
+    }
+  }
+  a(l) = a(i-1)
+  a(i-1) = x
+  i-1
+}
 
 /*
 Q7

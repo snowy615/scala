@@ -147,6 +147,10 @@ could modify the code above to include the mistakes and then run scalaTest to se
   /*
 Q6
    */
+
+  // looking for smallest n s.t. s[0..N-n) = s[n..N)
+  // outer loop invariant I = does not recur with period k
+  //inner loop invariant I = s[i] == s[i+n]
   def period(s: Array[Char]): Int = {
     val n = s.length
     var l = 1 // possible length of period
@@ -301,6 +305,9 @@ code eval below
 // 7 need boundary for invariant
 // I ^ (n=N or P(n))
 
+//8 d difficult
 
 
+//p1
 // 1b) positive , negative res + 3
+

@@ -22,21 +22,33 @@ object ArraysBook extends Book {
 
   /** Return the number stored against name */
   def recall(name: String): String = {
-    val i = find(name)
-    assert(i < count)
-    numbers(i)
+    val idx = find(name)
+    assert(idx < count && names(idx) == name)
+    numbers(idx)
   }
 
   /** Is name in the book? */
-  def isInBook(name: String): Boolean = find(name) < count
+  def isInBook(name: String): Boolean = {
+    val idx = find(name)
+    idx < count && names(idx) == name
+  }
 
   /** Add the maplet name -> number to the mapping */
   def store(name: String, number: String): Unit = {
-    val i = find(name)
-    if (i == count) {
-      assert(count < MAX); names(i) = name; count += 1
+    val idx = find(name)
+    if (idx < count && names(idx) == name) { // name exist and update number
+      numbers(idx) = number 
+    } else { // name not exist, shift elements to create space at idx, then add
+      var j = count
+      while (j > idx) {
+        names(j) = names(j-1)
+        numbers(j) = numbers(j-1)
+        j -= 1
+      }
+      names(idx) = name
+      numbers(idx) = number
+      count += 1
     }
-    numbers(i) = number
   }
 
   /** Delete the number stored against the name (if it exists) post: initial
@@ -52,10 +64,14 @@ object ArraysBook extends Book {
     val i = find(name)
     if (i == count) false
     else {
-      // plug the gap with the final entry becaause ordering does not matter
+      // delete at index idx, and then shift all elements back to fill the gap
+      var j = i
       count -= 1
-      names(i) = names(count)
-      numbers(i) = numbers(count)
+      while (j<count){
+        names(j) = names(j+1)
+        numbers(j) = numbers(j+1)
+        j += 1
+      }
       true
     }
   }

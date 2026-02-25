@@ -223,14 +223,15 @@ object p4 {
         post: S = S_0 ^ returns x from min x in S and x not in S_0
         def head: Int
 
-    c) implementation below
+    c) implementation
+
+    def head: Int = {
+        val midx = arr.indexOf(true) // find index of smallest element
+        if (midx == -1) throw new NoSuchElementException("head of empty set")
+        midx
+    }
 
    */
-  def head: Int = {
-    val midx = arr.indexOf(true) // find index of smallest element
-    if (midx == -1) throw new NoSuchElementException("head of empty set")
-    midx
-  }
 
   /*
     Q7
@@ -253,6 +254,48 @@ object p4 {
     
     isInBook = O(log N)
     call find() which is O(log N)
+   */
+
+  /*
+    Q9 multiset
+   */
+
+  /** A bag from [0, N) val = number of occurrences state: bag: Array[Int] Int
+    * -> Int init: bag = [0, 0, ..., 0]
+    */
+  trait Bag {
+    // add x to the bag
+    // pre: 0 <= x < N
+    // post: bag(x) = bag_0(x) + 1
+    def add(x: Int): Unit
+    // return the number of occurrences of x in the bag
+    // pre: 0 <= x < N
+    // post: return bag(x)
+    def count(x: Int): Int
+
+  }
+
+  class ABag(val N: Int) extends Bag {
+    val bag = new Array[Int](N) // could make private
+
+    def add(x: Int): Unit = {
+      if (x < 0 || x >= N)
+        throw new IllegalArgumentException("x must be between 0 and N-1")
+      bag(x) += 1
+    }
+    def count(x: Int): Int = {
+      if (x < 0 || x >= N)
+        throw new IllegalArgumentException("x must be between 0 and N-1")
+      bag(x)
+    }
+  }
+  /*
+    Q10
+    counting sort with multiset.
+    Know it's from 0 to N-1 so create an array of size N. For every number x, increment bag(x). This takes O(N)
+    Then iterate through the array and print x for bag(x) times. This takes O(MAX)
+    Total time complexity is O(MAX+N)
+
    */
 
 }

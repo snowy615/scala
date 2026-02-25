@@ -1,29 +1,27 @@
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 
-class p2Spec extends AnyFlatSpec with Matchers {
+class p2Spec extends AnyFunSuite {
 
   // Q3
   val words = Array("abcdefg", "cdefg", "bcdefg", "efg", "defg")
 
-  "The words array" should "sort alphabetically" in {
+  test("sort alphabetically") {
     val result = words.sorted
     val expected = Array("abcdefg", "bcdefg", "cdefg", "defg", "efg")
-    result should equal(expected)
+    assert(result sameElements expected)
   }
 
-  it should "sort by length (short -> long)" in {
+  test("sort by length (short -> long)") {
     val result = words.sortBy(_.length)
     val expected = Array("efg", "defg", "cdefg", "bcdefg", "abcdefg")
-    result should equal(expected)
+    assert(result sameElements expected)
   }
 
-  it should "reverse array" in {
+  test("reverse array") {
     val result = words.reverse
     val expected = Array("defg", "efg", "bcdefg", "cdefg", "abcdefg")
-    result should equal(expected)
+    assert(result sameElements expected)
   }
- 
 
   // Q5
 
@@ -32,33 +30,33 @@ class p2Spec extends AnyFlatSpec with Matchers {
     p2.search(patt.toCharArray, line.toCharArray)
   }
 
-  "The mistakes " should "a) " in {
-    search("hot", "brain") should be(false)
+  test("search: hot not in brain") {
+    assert(search("hot", "brain") === false)
   }
-  it should "b) " in {
-    search("rain", "brain") should be(true)
+  test("search: rain in brain") {
+    assert(search("rain", "brain") === true)
   }
-  it should "c) " in {
-    search("rain", "brain") should be(true)
+  test("search: rain in brain (duplicate)") {
+    assert(search("rain", "brain") === true)
   }
-  it should "d) " in {
-    search("vain", "brain") should be(false)
+  test("search: vain not in brain") {
+    assert(search("vain", "brain") === false)
   }
-  it should "e) " in {
-    search("aaa", "bbb") should be(false)
+  test("search: aaa not in bbb") {
+    assert(search("aaa", "bbb") === false)
   }
-  it should "f) " in {
-    search("aaa", "aaa") should be(true)
+  test("search: aaa in aaa") {
+    assert(search("aaa", "aaa") === true)
   }
 
   // Q6
-  "Period" should "=1 aaaa" in {
-    p2.period("aaaa".toCharArray) should be(1)
+  test("period = 1 for aaaa") {
+    assert(p2.period("aaaa".toCharArray) === 1)
   }
-  it should "=2 abab" in {
-    p2.period("abab".toCharArray) should be(2)
+  test("period = 2 for abab") {
+    assert(p2.period("abab".toCharArray) === 2)
   }
-  it should "=4 abac" in {
-    p2.period("abac".toCharArray) should be(4)
+  test("period = 4 for abac") {
+    assert(p2.period("abac".toCharArray) === 4)
   }
 }

@@ -1,5 +1,3 @@
-// package p1
-
 object Cipher {
 
   /** Bit-wise exclusive-or of two characters */
@@ -99,13 +97,12 @@ object Cipher {
   /** The second optional statistical test, to guess characters of the key. */
   def crackKey(klen: Int, ciphertext: Array[Char]): Unit = {
     val counts = Array.ofDim[Int](klen, 256)
-    // rows = key positions, columns = characters
 
     var shift = klen
     while (shift < ciphertext.length) {
       for (i <- 0 until ciphertext.length - shift) {
         if (ciphertext(i) == ciphertext(i + shift)) {
-          val keyChar = (ciphertext(i).toInt ^ 32) // space = 32
+          val keyChar = (ciphertext(i).toInt ^ 32)
           if (keyChar >= 32 && keyChar < 127) {
             counts(i % klen)(keyChar) += 1
           }
@@ -132,23 +129,18 @@ object Cipher {
 
   /** The main method just selects which piece of functionality to run */
   def run(args: Array[String]) = {
-    // string to print if error occurs
     val errString =
       "Usage: scala Cipher (-encrypt|-decrypt) key [file]\n" +
         "     | scala Cipher -crib crib [file]\n" +
         "     | scala Cipher -crackKeyLen [file]\n" +
         "     | scala Cipher -crackKey len [file]"
 
-    // Get the plaintext, either from the file whose name appears in position
-    // pos, or from standard input
     def getPlain(pos: Int) =
       if (args.length == pos + 1) readFile(args(pos)) else readStdin()
 
-    // Check there are at least n arguments
     def checkNumArgs(n: Int) =
       if (args.length < n) { println(errString); sys.exit }
 
-    // Parse the arguments, and call the appropriate function
     checkNumArgs(1)
     val command = args(0)
     if (command == "-encrypt" || command == "-decrypt") {

@@ -299,3 +299,15 @@ object p4 {
    */
 
 }
+
+
+
+//binary search (l<r) l = m, r = m+1
+
+//Q1 liskov substitution principle
+
+//returns = head ^ s = s_0 \ {head}
+
+//Q5 invariant maintenance
+
+// (circle+circle) = update

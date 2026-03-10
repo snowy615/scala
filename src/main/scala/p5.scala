@@ -105,7 +105,7 @@ object p5 {
             }
             if (pre.next == null) return null
 
-            val found = pre.next
+            val found = pre.next // save
             pre.next = found.next //patch hole
             found.next = head.next //move to front
             head.next = found 
@@ -115,5 +115,30 @@ object p5 {
     }
      */
 
+    /*
+    Q5
+
+    trait Queue[A] {
+        def enqueue(x:A): Unit
+        def dequeue(): A
+        def isEmpty: Boolean
+    }
+    class ArrayQueue extends Queue[Int]{
+        val MAX = 100
+        val data = new Array[Int]
+        var front = 0
+        var size = 0
+        //DTI:
+            1. 0 <= front < MAX
+            2. 0 <= size <= MAX
+            3. data != null & data.length == MAX
+        //AF: q = [data((front + i)%MAX) | for all 0 <= i < size]
+    }
+    */
+
 
 }
+
+//1b loop invariant
+
+//3 if (pre.next == null && pre.next.name != name) pre.next = new Node(name, number, null)

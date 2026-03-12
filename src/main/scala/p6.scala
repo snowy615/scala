@@ -197,6 +197,13 @@ object p6 {
         val sortedWord = word.sorted
         dict.filter(pair => pair._1 == sortedWord).map(pair => pair._2)
     }
+
+    val buckets = dictionary.groupBy(word => word.sorted)
+    val largestSet = buckets.values.maxBy(bucket => bucket.length) // largest
+    
+    val buckets = dictionary.groupBy(word => word.sorted)
+    val validAnagramBuckets = buckets.filter(bucket => bucket.length > 1)
+    val longestAnagrams = validAnagramBuckets.values.maxBy(bucket => bucket(0)length)
     
    */
 
